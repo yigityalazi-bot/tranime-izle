@@ -1,0 +1,1132 @@
+/* ==========================================================================
+   TRANIME - ANIZM / NETFLIX TARZI MODERN DİKEY SİDEBAR & STREAMING TEMASI
+   Saf CSS3 (Grid & Flexbox) ile Hazırlanmıştır.
+   ========================================================================== */
+
+/* --- 1. CSS DEĞİŞKENLERİ (RENK PALETİ VE BOYUTLAR) --- */
+:root {
+  /* Arka Planlar (Göz yormayan yumuşak koyu antrasit/siyah) */
+  --bg-body: #0b0d13;
+  --bg-sidebar: #11141c;
+  --bg-surface: #161922;
+  --bg-surface-elevated: #1d222e;
+  --bg-glass: rgba(17, 20, 28, 0.85);
+
+  /* Neon Kırmızı ve Turuncu Vurgu Renkleri */
+  --accent-red: #ff2a2a;
+  --accent-orange: #ff5722;
+  --accent-gradient: linear-gradient(135deg, #ff2a2a 0%, #ff6b2b 100%);
+  --accent-red-dim: rgba(255, 42, 42, 0.12);
+  --accent-red-glow: 0 0 16px rgba(255, 42, 42, 0.45);
+  --accent-red-glow-strong: 0 0 28px rgba(255, 42, 42, 0.8);
+
+  /* Metin Renkleri */
+  --text-main: #f3f5f9;
+  --text-muted: #8e96a7;
+  --text-dim: #555c6d;
+
+  /* Kenarlıklar & Yuvarlatmalar */
+  --border-light: rgba(255, 255, 255, 0.07);
+  --border-hover: rgba(255, 42, 42, 0.45);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-full: 9999px;
+
+  /* Dikey Sidebar Genişliği */
+  --sidebar-width: 280px;
+
+  /* Yumuşak Geçişler */
+  --transition-fast: 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  --transition-normal: 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* --- 2. SIFIRLAMA (RESET) & GENEL AYARLAR --- */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--bg-body);
+  color: var(--text-main);
+  scroll-behavior: smooth;
+  line-height: 1.5;
+}
+
+body {
+  min-height: 100vh;
+  display: flex; /* Esnek yerleşim: Sol sidebar + Sağ içerik */
+  overflow-x: hidden;
+  background: radial-gradient(circle at 80% 0%, #151a26 0%, #0b0d13 60%);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: all var(--transition-fast);
+}
+
+ul {
+  list-style: none;
+}
+
+button, input {
+  font-family: inherit;
+  border: none;
+  outline: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Özel Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-body);
+}
+::-webkit-scrollbar-thumb {
+  background: #242938;
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-red);
+  box-shadow: var(--accent-red-glow);
+}
+
+/* ==========================================================================
+   3. SABİT DİKEY SOL MENÜ (ANIZM TARZI FIXED SIDEBAR)
+   ========================================================================== */
+.sidebar-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  box-shadow: 6px 0 30px rgba(0, 0, 0, 0.45);
+}
+
+/* --- 3.1 Logo Alanı --- */
+.sidebar-logo {
+  padding: 24px 22px;
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+}
+
+.brand-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--accent-gradient);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(255, 42, 42, 0.45);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+  flex-shrink: 0;
+}
+
+.brand-icon svg {
+  width: 20px;
+  height: 20px;
+  color: #ffffff;
+}
+
+.brand-logo:hover .brand-icon {
+  transform: scale(1.08) rotate(4deg);
+  box-shadow: var(--accent-red-glow-strong);
+}
+
+.brand-highlight {
+  color: var(--accent-red);
+  text-shadow: 0 0 12px rgba(255, 42, 42, 0.6);
+}
+
+/* --- 3.2 Menü Listesi Kaydırma Alanı --- */
+.sidebar-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.sidebar-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+.sidebar-scroll:hover::-webkit-scrollbar-thumb {
+  background: #252b3b;
+}
+
+.menu-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.menu-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 0 12px 6px;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* Dikey Menü Elemanı (Nav Item) */
+.nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+  border: 1px solid transparent;
+}
+
+.nav-icon {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dim);
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.nav-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.nav-text {
+  flex: 1;
+  white-space: nowrap;
+}
+
+.nav-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  background: var(--accent-gradient);
+  color: #ffffff;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  box-shadow: 0 0 8px rgba(255, 42, 42, 0.45);
+}
+
+/* HOVER EFEKTİ (Neon Kırmızı Parlama & Aydınlanma) */
+.nav-item:hover {
+  color: #ffffff;
+  background: var(--accent-red-dim);
+  border-color: rgba(255, 42, 42, 0.3);
+  transform: translateX(5px);
+  box-shadow: 0 0 18px rgba(255, 42, 42, 0.18);
+}
+
+.nav-item:hover .nav-icon {
+  color: var(--accent-red);
+  transform: scale(1.12);
+  filter: drop-shadow(0 0 6px rgba(255, 42, 42, 0.7));
+}
+
+/* Aktif Menü Elemanı */
+.nav-item.active {
+  background: linear-gradient(90deg, rgba(255, 42, 42, 0.18) 0%, rgba(255, 87, 34, 0.08) 100%);
+  color: #ffffff;
+  font-weight: 600;
+  border-left: 3px solid var(--accent-red);
+  box-shadow: inset 0 0 20px rgba(255, 42, 42, 0.08);
+}
+
+.nav-item.active .nav-icon {
+  color: var(--accent-red);
+  filter: drop-shadow(0 0 8px rgba(255, 42, 42, 0.8));
+}
+
+/* --- 3.3 Akordiyon Kategori Menüsü (Sol Menü Altı) --- */
+.accordion-box {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: border-color var(--transition-fast);
+}
+
+.accordion-box:hover {
+  border-color: rgba(255, 42, 42, 0.35);
+}
+
+.accordion-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-main);
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+}
+
+.accordion-summary::-webkit-details-marker {
+  display: none;
+}
+
+.summary-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.summary-title svg {
+  width: 18px;
+  height: 18px;
+  color: var(--accent-red);
+}
+
+.summary-arrow {
+  width: 16px;
+  height: 16px;
+  color: var(--text-dim);
+  transition: transform var(--transition-fast);
+}
+
+details[open] .summary-arrow {
+  transform: rotate(180deg);
+  color: var(--accent-red);
+}
+
+.accordion-content {
+  padding: 10px 12px 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  border-top: 1px solid var(--border-light);
+  background: var(--bg-surface);
+}
+
+.genre-chip {
+  padding: 6px 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 500;
+  text-align: center;
+  transition: all var(--transition-fast);
+}
+
+.genre-chip:hover {
+  background: var(--accent-red-dim);
+  border-color: var(--accent-red);
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(255, 42, 42, 0.35);
+  transform: scale(1.03);
+}
+
+.genre-chip.active {
+  background: var(--accent-gradient);
+  color: #ffffff;
+  font-weight: 600;
+  border-color: var(--accent-red);
+  box-shadow: 0 0 10px rgba(255, 42, 42, 0.5);
+}
+
+/* --- 3.4 Sol Menü Alt Sabit Footer --- */
+.sidebar-footer {
+  padding: 16px;
+  border-top: 1px solid var(--border-light);
+  background: #0d0f15;
+}
+
+.user-profile-mini {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-light);
+}
+
+.avatar-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+
+.user-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.login-link {
+  font-size: 0.72rem;
+  color: var(--accent-orange);
+  font-weight: 500;
+}
+
+.login-link:hover {
+  color: var(--accent-red);
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   4. SAĞ TARAFTAKİ ANA İÇERİK ALANI (FLEXBOX LAYOUT)
+   ========================================================================== */
+.main-wrapper {
+  margin-left: var(--sidebar-width); /* Sol menünün sağından devam eder */
+  flex: 1;
+  min-width: 0; /* Flexbox taşmalarını önler */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - var(--sidebar-width));
+}
+
+/* --- 4.1 Minimalist Üst Bar (Topbar) --- */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  height: 70px;
+  background: var(--bg-glass);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border-light);
+  padding: 0 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.topbar-search {
+  flex: 1;
+  max-width: 500px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-full);
+  padding: 9px 18px;
+  transition: all var(--transition-fast);
+}
+
+.topbar-search:focus-within {
+  border-color: var(--accent-red);
+  background: var(--bg-surface-elevated);
+  box-shadow: 0 0 16px rgba(255, 42, 42, 0.35);
+}
+
+.search-icon {
+  color: var(--text-dim);
+  margin-right: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.topbar-search input {
+  width: 100%;
+  background: transparent;
+  color: var(--text-main);
+  font-size: 0.9rem;
+}
+
+.topbar-search input::placeholder {
+  color: var(--text-dim);
+}
+
+.search-shortcut {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-light);
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.btn-auth-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 22px;
+  background: var(--accent-gradient);
+  color: #ffffff;
+  border-radius: var(--radius-md);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(255, 42, 42, 0.35);
+  transition: all var(--transition-fast);
+}
+
+.btn-auth-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--accent-red-glow-strong);
+}
+
+/* ==========================================================================
+   5. HERO SLIDER (VİTRİN ALANI)
+   ========================================================================== */
+.content-body {
+  padding: 28px 36px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.hero-slider {
+  position: relative;
+  width: 100%;
+  height: 460px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border-light);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+}
+
+.hero-backdrop {
+  position: absolute;
+  inset: 0;
+  background-image: url('https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=1600&auto=format&fit=crop&q=80');
+  background-size: cover;
+  background-position: center 25%;
+  transform: scale(1.02);
+  transition: transform 6s ease;
+}
+
+.hero-slider:hover .hero-backdrop {
+  transform: scale(1.06);
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(11, 13, 19, 0.96) 0%,
+    rgba(11, 13, 19, 0.82) 42%,
+    rgba(11, 13, 19, 0.3) 75%,
+    rgba(11, 13, 19, 0.05) 100%
+  ),
+  linear-gradient(0deg, rgba(11, 13, 19, 0.9) 0%, transparent 50%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 650px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 45px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent-red-dim);
+  border: 1px solid rgba(255, 42, 42, 0.4);
+  color: var(--accent-red);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 5px 14px;
+  border-radius: var(--radius-full);
+  margin-bottom: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  align-self: flex-start;
+}
+
+.hero-title {
+  font-size: 2.8rem;
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 14px;
+  letter-spacing: -0.5px;
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+}
+
+.hero-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+  font-size: 0.85rem;
+}
+
+.rating {
+  color: #ffb703;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.meta-tag {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 3px 10px;
+  border-radius: var(--radius-sm);
+  color: var(--text-main);
+  font-weight: 500;
+}
+
+.meta-quality {
+  background: var(--accent-red);
+  color: #ffffff;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 0.75rem;
+  box-shadow: 0 0 10px rgba(255, 42, 42, 0.4);
+}
+
+.hero-desc {
+  font-size: 0.94rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 24px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.btn-hero-play {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--accent-gradient);
+  color: #ffffff;
+  border-radius: var(--radius-md);
+  padding: 12px 28px;
+  font-weight: 700;
+  box-shadow: 0 6px 20px rgba(255, 42, 42, 0.45);
+  transition: all var(--transition-fast);
+}
+
+.btn-hero-play:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--accent-red-glow-strong);
+}
+
+.btn-hero-play svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.btn-hero-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-md);
+  padding: 12px 24px;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+}
+
+.btn-hero-add:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.slider-dots {
+  position: absolute;
+  bottom: 24px;
+  right: 36px;
+  z-index: 3;
+  display: flex;
+  gap: 8px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.dot.active {
+  width: 28px;
+  background: var(--accent-red);
+  box-shadow: var(--accent-red-glow);
+}
+
+/* ==========================================================================
+   6. ANİME BÖLÜM GRID'İ & KART EFEKTLERİ
+   ========================================================================== */
+.section-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.neon-pill {
+  width: 4px;
+  height: 24px;
+  background: var(--accent-gradient);
+  border-radius: var(--radius-full);
+  box-shadow: var(--accent-red-glow);
+}
+
+.section-heading h2 {
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--accent-red);
+  border-radius: 50%;
+  box-shadow: var(--accent-red-glow);
+  animation: pulse 1.8s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.9); opacity: 0.7; box-shadow: 0 0 0 0 rgba(255, 42, 42, 0.7); }
+  70% { transform: scale(1.1); opacity: 1; box-shadow: 0 0 0 8px rgba(255, 42, 42, 0); }
+  100% { transform: scale(0.9); opacity: 0.7; box-shadow: 0 0 0 0 rgba(255, 42, 42, 0); }
+}
+
+.section-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.filter-pills {
+  display: flex;
+  gap: 6px;
+  background: var(--bg-surface);
+  padding: 4px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+}
+
+.filter-pill {
+  padding: 6px 16px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: transparent;
+  color: var(--text-muted);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.filter-pill:hover {
+  color: #ffffff;
+}
+
+.filter-pill.active {
+  background: var(--accent-gradient);
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(255, 42, 42, 0.4);
+}
+
+/* 5'Lİ ANIME KART GRID'İ */
+.anime-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 22px;
+}
+
+/* Anime Kartı Kapsayıcısı */
+.anime-card {
+  position: relative;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal);
+}
+
+/* KART HOVER: Neon Turuncu/Kırmızı Gölge & Çerçeve */
+.anime-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--border-hover);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45), var(--accent-red-glow);
+}
+
+/* Afiş Alanı (Resim kutudan taşmadan büyüyecek: overflow: hidden) */
+.card-poster {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  background: #191d28;
+}
+
+.card-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.45s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Afiş Hover Büyüme (Scale) */
+.anime-card:hover .card-poster img {
+  transform: scale(1.09);
+}
+
+.poster-badges {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: flex;
+  gap: 6px;
+  z-index: 2;
+}
+
+.badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+}
+
+.ep-badge {
+  background: var(--accent-gradient);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.hd-badge {
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.lang-badge {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  z-index: 2;
+  background: rgba(11, 13, 19, 0.88);
+  backdrop-filter: blur(6px);
+  color: #f3f5f9;
+  border: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Hover Play Overlay */
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(255, 42, 42, 0.18) 0%, rgba(11, 13, 19, 0.65) 80%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+  z-index: 2;
+}
+
+.play-btn-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--accent-gradient);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--accent-red-glow-strong);
+  transform: scale(0.7);
+  transition: transform var(--transition-normal);
+}
+
+.play-btn-circle svg {
+  width: 20px;
+  height: 20px;
+  margin-left: 2px;
+  fill: currentColor;
+}
+
+.anime-card:hover .card-overlay {
+  opacity: 1;
+}
+
+.anime-card:hover .play-btn-circle {
+  transform: scale(1);
+}
+
+.card-info {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+  background: var(--bg-surface);
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: var(--text-dim);
+}
+
+.meta-genre {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 75%;
+}
+
+.meta-rating {
+  color: #ffb703;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.card-title {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color var(--transition-fast);
+}
+
+.anime-card:hover .card-title {
+  color: var(--accent-red);
+}
+
+.card-subtext {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+}
+
+/* Boş Durum Uyarısı */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 65px 30px;
+  background: var(--bg-surface);
+  border: 1px dashed var(--border-hover);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  margin: 10px 0;
+  width: 100%;
+}
+
+.empty-icon {
+  width: 76px;
+  height: 76px;
+  background: var(--accent-red-dim);
+  border: 1px solid var(--border-hover);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.9rem;
+  color: var(--accent-red);
+  box-shadow: var(--accent-red-glow);
+  margin-bottom: 20px;
+}
+
+.empty-state h3 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 10px;
+}
+
+.empty-state p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  max-width: 500px;
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   7. FOOTER
+   ========================================================================== */
+.footer {
+  margin-top: 40px;
+  background: #090b0f;
+  border-top: 1px solid var(--border-light);
+  padding: 30px 36px;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 0.8rem;
+}
+
+/* ==========================================================================
+   8. RESPONSIVE (DUYARLI) TASARIM
+   ========================================================================== */
+@media (max-width: 1400px) {
+  .anime-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 1100px) {
+  :root {
+    --sidebar-width: 80px;
+  }
+  .brand-text, .nav-text, .menu-label, .nav-badge, .accordion-box, .user-meta {
+    display: none;
+  }
+  .sidebar-logo {
+    justify-content: center;
+    padding: 20px 0;
+  }
+  .nav-item {
+    justify-content: center;
+    padding: 12px 0;
+  }
+  .nav-icon {
+    width: 24px;
+    height: 24px;
+  }
+  .user-profile-mini {
+    justify-content: center;
+    padding: 6px;
+  }
+  .anime-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar-fixed {
+    display: none;
+  }
+  .main-wrapper {
+    margin-left: 0;
+    width: 100%;
+  }
+  .topbar {
+    padding: 0 18px;
+  }
+  .content-body {
+    padding: 18px;
+  }
+  .hero-slider {
+    height: 360px;
+  }
+  .hero-title {
+    font-size: 1.8rem;
+  }
+  .anime-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
